@@ -38,16 +38,6 @@ class Compiler
     };
     LoopStack loops = {&bracket_pairs};
 
-    // mutable int32 _m_last_count;
-    // int32 m_counter() const {
-        // static int32 c = 0;
-        // return _m_last_count = ++c;
-    //     return bracket_pairs.size();
-    // }
-    // int32 m_last_count() const {
-    //     // return _m_last_count-1;
-    //     return bracket_pairs.size()+1;
-    // }
 
 public:
 
@@ -155,21 +145,15 @@ public:
                 }
                 // loop
                 case '[': {
-                    uint32 gen = bracket_pairs.size();
                     ofile << "\n";
-                    indent_stacked(); ofile << "restore = ptr;\n";
                     indent_stacked(); ofile << "while (*ptr) {\n";
                     loops.push(i);
-                    indent_stacked(); ofile << "char* save__"<<gen<< "= ptr;\n\n";
                     break;
                 }
                 case ']': {
-                    uint32 gen = bracket_pairs.size();
                     ofile << "\n";
-                    indent_stacked(); ofile << "restore = save__"<<--gen<<";\n";
                     loops.pop();
                     indent_stacked(); ofile << "}\n";
-                    indent_stacked(); ofile << "ptr = restore;\n\n";
                     break;
                 }
             };
